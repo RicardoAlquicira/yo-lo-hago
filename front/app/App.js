@@ -2,113 +2,67 @@
  * Sample React Native App
  * https://github.com/facebook/react-native
  *
+ * Generated with the UI Kitten template
+ * https://github.com/akveo/react-native-ui-kitten
+ *
+ * Documentation: https://akveo.github.io/react-native-ui-kitten/docs
+ *
  * @format
- * @flow strict-local
  */
 
 import React from 'react';
+import { StyleSheet } from 'react-native';
 import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
+  ApplicationProvider,
+  Button,
+  Icon,
+  IconRegistry,
+  Layout,
   Text,
-  StatusBar,
-} from 'react-native';
+} from '@ui-kitten/components';
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
+import * as eva from '@eva-design/eva';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+/**
+ * Use any valid `name` property from eva icons (e.g `github`, or `heart-outline`)
+ * https://akveo.github.io/eva-icons
+ */
+const HeartIcon = (props) => (
+  <Icon {...props} name='heart'/>
+);
 
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
-};
+export default () => (
+  <>
+    <IconRegistry icons={EvaIconsPack}/>
+    <ApplicationProvider {...eva} theme={eva.light}>
+      <Layout style={styles.container}>
+        <Text style={styles.text} category='h1'>
+          Welcome to UI Kitten 😻
+        </Text>
+        <Text style={styles.text} category='s1'>
+          Start with editing App.js to configure your App
+        </Text>
+        <Text style={styles.text} appearance='hint'>
+          For example, try changing theme to Dark by using eva.dark
+        </Text>
+        <Button style={styles.likeButton} icon={HeartIcon}>
+          LIKE
+        </Button>
+      </Layout>
+    </ApplicationProvider>
+  </>
+);
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  engine: {
-    position: 'absolute',
-    right: 0,
+  text: {
+    textAlign: 'center',
   },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
+  likeButton: {
+    marginVertical: 16,
   },
 });
-
-export default App;
