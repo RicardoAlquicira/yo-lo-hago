@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Avatar, Button, Text, Layout, Select, SelectItem } from '@ui-kitten/components';
+import { Avatar, Button, Text, Layout, Select, SelectItem, Modal, Card } from '@ui-kitten/components';
 import {Logo, LogoHeader} from "./Logo"
 import Stars from "./Stars"
 import PriceBar from "./PriceBar"
@@ -12,6 +12,7 @@ const data = [
 export const ProffesionalSelected = () => {
 
   const [selectedIndex, setSelectedIndex] = React.useState();
+  const [modalVisible, setModalVisible] = React.useState(false);
 
   const onSignInButtonPress = () => {
     // navigation && navigation.goBack();
@@ -76,7 +77,7 @@ export const ProffesionalSelected = () => {
         <Button
           style={{backgroundColor: 'rgba(22, 155, 213, 1)', marginTop:10}}
           size='medium'
-          onPress={onSignInButtonPress}>
+          onPress={() => setModalVisible(true)}>
           Leer comentarios
         </Button>
         <View style={styles.signInContainer}>
@@ -89,6 +90,25 @@ export const ProffesionalSelected = () => {
           </Button>
         </View>
       </View>
+      <Modal visible={modalVisible}>
+        <Card disabled={true} style={{borderRadius:20}}>
+          <Text style={{marginBottom:15}} category='h6'>Comentarios:</Text>
+          {[...Array(5).keys()].map(val=>
+            <View style={{flexDirection:"row", marginVertical:3}} key={val}>
+              <Avatar source={require('../assets/image-person.png')} style={styles.profileMiniAvatar}/>
+              <Text>Luisa: Excelente servicio!!</Text>
+            </View>
+          )}
+          <View style={{...styles.signInContainer, marginTop:15}}>
+            <Logo style={{width:60, height:60, marginRight:20}}/>
+            <Button
+              style={{backgroundColor: 'rgba(22, 155, 213, 1)', height:30, marginTop:10}}
+              onPress={() => setModalVisible(false)}>
+              Atras
+            </Button>
+          </View>
+        </Card>
+      </Modal>
       <Text style={[StyleSheet.absoluteFill, {width:'100%', textAlign:'center', top:630}]}>
         Copyright © 2020 Yo lo hago!!
       </Text>
@@ -135,6 +155,15 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: '#fff',
     tintColor: '#6C6C6C',
+  },
+  profileMiniAvatar: {
+    marginRight: 7,
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    alignSelf: 'center',
+    backgroundColor: 'rgba(22, 155, 213, 1)',
+    tintColor: '#fff',
   },
 });
 
