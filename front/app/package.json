@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@eva-design/eva": "2.0.0-alpha.1",
+    "@react-native-community/google-signin": "^4.0.0",
     "@react-navigation/native": "^5.1.5",
     "@ui-kitten/components": "5.0.0-alpha.1",
     "@ui-kitten/eva-icons": "5.0.0-alpha.1",
