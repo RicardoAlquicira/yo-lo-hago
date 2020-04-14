@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { Avatar, Button, Text, Layout, Select, SelectItem } from '@ui-kitten/components';
 import {Logo, LogoHeader} from "./Logo"
 import Stars from "./Stars"
+import PriceBar from "./PriceBar"
 
 const data = [
   {name:'Angel Orozco', age:30, profession:'Plomero', distance:'10 km', experienceTime:5, rate:3.5, fare:0.6},
@@ -35,7 +36,7 @@ export const ProffesionalSelected = () => {
           {data.map(renderOption)}
         </Select>
         <View style={styles.cardContainer}>
-          <View style={{backgroundColor:'#F57', flex:6, flexDirection:'row'}}>
+          <View style={{flex:6, flexDirection:'row'}}>
             <View style={{flex:3}}>
               <Avatar source={require('../assets/image-person.png')} style={styles.profileAvatar}/>
             </View>
@@ -61,27 +62,30 @@ export const ProffesionalSelected = () => {
               </View>
             </View>
           </View>
-          <View style={{backgroundColor:'#7A7', flex:5}}>
-            <View style={{flex:1, flexDirection:'row', justifyContent:'space-around'}}>
-              <Stars progress={0.7}/>
-            </View>
-            <View style={{flex:1, flexDirection:'row', justifyContent:'space-between'}}>
+          <View style={{flex:5}}>
+            <Stars progress={0.7} style={{marginVertical:2, flex:1, flexDirection:'row', justifyContent:'space-around'}}/>
+            <View style={{marginTop:8, flex:1, flexDirection:'row', justifyContent:'space-between'}}>
               <Text>Precio:</Text>
+              <PriceBar/>
             </View>
-            <View style={{flex:1, flexDirection:'row', justifyContent:'space-between'}}>
-              <Text>Bajo</Text>
-              <Text>Promedio</Text>
-              <Text>Alto</Text>
+            <View style={{marginLeft:50, flex:1, flexDirection:'row', justifyContent:'space-between'}}>
+              {['Bajo', 'Promedio', 'Alto'].map(val=><Text style={{fontSize:12}} key={val}>{val}</Text>)}
             </View>
           </View>
         </View>
+        <Button
+          style={{backgroundColor: 'rgba(22, 155, 213, 1)', marginTop:10}}
+          size='medium'
+          onPress={onSignInButtonPress}>
+          Leer comentarios
+        </Button>
         <View style={styles.signInContainer}>
           <Logo style={{width:90, height:90, marginTop:20, marginRight:20}}/>
           <Button
             style={styles.signInButton}
             size='large'
             onPress={onSignInButtonPress}>
-            Enviar
+            Contratar
           </Button>
         </View>
       </View>
@@ -118,7 +122,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     width: '90%',
     height: 200,
-    borderWidth: 2,
+    borderWidth: 1,
     padding: 5,
     flex:0.6,
     flexDirection:'column'
