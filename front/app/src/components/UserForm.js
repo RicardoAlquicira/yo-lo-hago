@@ -72,6 +72,7 @@ export const UserForm = () => {
           accessoryRight={MobileIcon}
           value={userMobile}
           onChangeText={setUserMobile}
+          keyboardType={'numeric'}
           textStyle={{color:baseColor}}
         />
         <Select
