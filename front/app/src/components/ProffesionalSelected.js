@@ -66,7 +66,7 @@ export const ProffesionalSelected = () => {
             <Stars progress={0.7} style={{marginVertical:2, flex:1, flexDirection:'row', justifyContent:'space-around'}}/>
             <View style={{marginTop:8, flex:1, flexDirection:'row', justifyContent:'space-between'}}>
               <Text>Precio:</Text>
-              <PriceBar/>
+              <PriceBar progress={0.6}/>
             </View>
             <View style={{marginLeft:50, flex:1, flexDirection:'row', justifyContent:'space-between'}}>
               {['Bajo', 'Promedio', 'Alto'].map(val=><Text style={{fontSize:12}} key={val}>{val}</Text>)}
