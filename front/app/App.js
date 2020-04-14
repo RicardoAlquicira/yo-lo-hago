@@ -10,6 +10,7 @@ import {
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import * as eva from '@eva-design/eva';
 import {LoginPage} from "./src/components/LoginPage"
+import {UserForm} from "./src/components/UserForm"
 import Background from "./src/components/Background"
 
 export default () => (
@@ -17,7 +18,7 @@ export default () => (
     <IconRegistry icons={EvaIconsPack}/>
     <ApplicationProvider {...eva} theme={eva.light}>
       <Background/>
-      <LoginPage/>
+      <UserForm/>
     </ApplicationProvider>
   </>
 );

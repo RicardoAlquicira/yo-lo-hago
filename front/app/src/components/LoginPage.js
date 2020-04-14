@@ -4,20 +4,8 @@ import { Icon, Input, Button, Text, Layout } from '@ui-kitten/components';
 import { GoogleSignin, GoogleSigninButton } from '@react-native-community/google-signin';
 import {Logo, LogoHeader} from "./Logo"
 
-const FacebookIcon = (style) => (
-  <Icon {...style} name='facebook'/>
-);
-
-const GoogleIcon = (style) => (
-  <Icon {...style} name='google'/>
-);
-
-const PersonIcon = (style) => (
-  <Icon {...style} name='person'/>
-);
-
-const TwitterIcon = (style) => (
-  <Icon {...style} name='twitter'/>
+const EmailIcon = (style) => (
+  <Icon {...style} name='email-outline'/>
 );
 
 export const LoginPage = () => {
@@ -46,13 +34,12 @@ export const LoginPage = () => {
 
   return (
     <Layout style={styles.container} level='1'>
-      
       <View style={styles.formContainer}>
-        <LogoHeader style={{width:"100%", height:100, marginTop:-100, marginBottom:50}}/>
+        <LogoHeader style={{width:"100%", height:100, marginTop:-20, marginBottom:50}}/>
         <Input
           status='control'
           placeholder='Email'
-          accessoryRight={PersonIcon}
+          accessoryRight={EmailIcon}
           value={email}
           onChangeText={setEmail}
         />
@@ -96,6 +83,9 @@ export const LoginPage = () => {
           ¿No tienes una cuenta? Registrate.
         </Button>
       </View>
+      <Text style={[StyleSheet.absoluteFill, {width:'100%', textAlign:'center', top:630}]}>
+        Copyright © 2020 Yo lo hago!!
+      </Text>
     </Layout>
   );
 };
