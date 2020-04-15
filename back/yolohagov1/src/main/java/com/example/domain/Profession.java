@@ -11,25 +11,15 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "User")
+@Table(name = "Profession")
 @Getter @Setter
-public class User {
+public class Profession {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	@Column(length = 140)
+	@Column(length = 40)
 	private String name;
-	@Column(length = 80)
-	private String email;
-	@Column(length = 20)
-	private String phone;
-	private Integer age;
-	@Column(length = 60)
-	private String password;
-	private Profession profession;
-	private Integer experienceYears;
-	@Column(length = 600)
-	private String experience;
-	private WorkSchedule workSchedule;
+	@Column(length = 40)
+	private String description;
 
 }
