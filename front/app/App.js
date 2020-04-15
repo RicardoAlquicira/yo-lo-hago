@@ -39,7 +39,7 @@ const DrawerContent = ({ navigation, state }) => (
 
 export const DrawerNavigator = () => (
   <Navigator drawerContent={props => <DrawerContent {...props}/>} 
-  headerMode="none" animationEnabled={false} initialRouteName="Login">
+  headerMode="none" animationEnabled={false} initialRouteName="UserForm">
     <Screen name="Login" component={LoginPage} />
     <Screen name="UserForm" component={UserForm} />
     <Screen name="ClientHome" component={ClientHome} />

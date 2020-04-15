@@ -25,7 +25,7 @@ export default Background = ({color="white"}) => {
             gradientUnits="userSpaceOnUse"
           >
             <Stop offset="0" stopColor="#ffffff" stopOpacity="1" />
-            <Stop offset="1" stopColor="#015478" stopOpacity="1" />
+            <Stop offset="1" stopColor="#015478" stopOpacity="0.2" />
           </RadialGradient>
         </Defs>
         <Rect x="0" y="0" width="100%" height="100%" fill="url(#grad)" />

@@ -25,7 +25,7 @@ export const EyeOffIcon = (style) => (
 export const Payment = () => {
 
   const styles = useStyleSheet(themedStyles);
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
 
   const [number, setNumber] = React.useState();
   const [name, setName] = React.useState();

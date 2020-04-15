@@ -4,9 +4,7 @@ import { Icon, Input, Button, Text, Layout } from '@ui-kitten/components';
 import { GoogleSignin, GoogleSigninButton } from '@react-native-community/google-signin';
 import {Logo, LogoHeader} from "./Logo"
 
-const EmailIcon = (style) => (
-  <Icon {...style} name='email-outline'/>
-);
+const baseColor = '#6C6C6C';
 
 export const LoginPage = ({navigation}) => {
 
@@ -14,12 +12,16 @@ export const LoginPage = ({navigation}) => {
   const [password, setPassword] = React.useState();
   const [passwordVisible, setPasswordVisible] = React.useState(false);
 
+  const EmailIcon = (style) => (
+    <Icon {...style} fill={baseColor} name='email-outline'/>
+  );
+
   const onSignInButtonPress = () => {
     navigation.navigate('UserForm');
   };
 
   const onSignUpButtonPress = () => {
-    // navigation && navigation.navigate('SignUp4');
+  // navigation && navigation.navigate('SignUp4');
   };
 
   const onForgotPasswordButtonPress = () => {
@@ -28,7 +30,7 @@ export const LoginPage = ({navigation}) => {
 
   const renderIcon = (props) => (
     <TouchableWithoutFeedback onPress={()=>setPasswordVisible(oldValue=>!oldValue)}>
-      <Icon {...props} name={passwordVisible ? 'eye-off' : 'eye'}/>
+      <Icon {...props} fill={baseColor} name={passwordVisible ? 'eye-off' : 'eye'}/>
     </TouchableWithoutFeedback>
   );
 
@@ -40,6 +42,8 @@ export const LoginPage = ({navigation}) => {
         <Input
           status='control'
           placeholder='Email'
+          placeholderTextColor = {baseColor}
+          textStyle={{color:'#000'}}
           accessoryRight={EmailIcon}
           value={email}
           onChangeText={setEmail}
@@ -48,6 +52,8 @@ export const LoginPage = ({navigation}) => {
           style={styles.passwordInput}
           status='control'
           placeholder='Password'
+          placeholderTextColor = {baseColor}
+          textStyle={{color:'#000'}}
           accessoryRight={renderIcon}
           value={password}
           secureTextEntry={!passwordVisible}
@@ -127,6 +133,7 @@ const styles = StyleSheet.create({
   },
   forgotPasswordButton: {
     paddingHorizontal: 0,
+    color:baseColor
   },
   signUpButton: {
     marginVertical: 12,

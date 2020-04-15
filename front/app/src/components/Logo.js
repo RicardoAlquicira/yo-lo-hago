@@ -20,7 +20,7 @@ export const Logo = (style) => {
   );
 }
 
-export const LogoHeader = ({style, colorTheme="white"}) => {
+export const LogoHeader = ({style, colorTheme="black"}) => {
   return (
     <View {...style}>
       <Svg height="100%" width="100%" viewBox="0 0 450 120">

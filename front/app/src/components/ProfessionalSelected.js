@@ -4,6 +4,7 @@ import { Avatar, Button, Text, Layout, Select, SelectItem, Modal, Card } from '@
 import {Logo, LogoHeader} from "./Logo"
 import Stars from "./Stars"
 import PriceBar from "./PriceBar"
+import {AvatarPlaceholder} from "./AvatarPlaceholder"
 
 const data = [
   {name:'Angel Orozco', age:30, profession:'Plomero', distance:'10 km', experienceTime:5, rate:3.5, fare:0.6},
@@ -40,7 +41,7 @@ export const ProfessionalSelected = () => {
         <View style={styles.cardContainer}>
           <View style={{flexDirection:'row'}}>
             <View style={{flex:2, justifyContent:'center'}}>
-              <Avatar source={require('../assets/image-person.png')} style={styles.profileAvatar}/>
+              <AvatarPlaceholder style={styles.profileAvatar}/>
             </View>
             <View style={{flex:7, justifyContent:'center'}}>
               <View style={{flexDirection:'row'}}>
@@ -90,7 +91,7 @@ export const ProfessionalSelected = () => {
           <Text style={{marginBottom:15}} category='h6'>Comentarios:</Text>
           {[...Array(5).keys()].map(val=>
             <View style={{flexDirection:"row", marginVertical:3}} key={val}>
-              <Avatar source={require('../assets/image-person.png')} style={styles.profileMiniAvatar}/>
+              <AvatarPlaceholder style={styles.profileMiniAvatar}/>
               <Text>Luisa: Excelente servicio!!</Text>
             </View>
           )}
@@ -144,8 +145,6 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 25,
     alignSelf: 'center',
-    backgroundColor: '#fff',
-    tintColor: '#6C6C6C',
   },
   profileMiniAvatar: {
     marginRight: 7,
@@ -153,8 +152,6 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 10,
     alignSelf: 'center',
-    backgroundColor: 'rgba(22, 155, 213, 1)',
-    tintColor: '#fff',
   },
 });
 

@@ -2,16 +2,17 @@ import React from 'react';
 import { StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
 import { Icon, Input, Button, Text, Layout, Select, SelectItem, IndexPath } from '@ui-kitten/components';
 import {Logo, LogoHeader} from "./Logo"
+import {AvatarPlaceholder} from "./AvatarPlaceholder"
 import ProfileAvatar from "./ProfileAvatar"
 
 const baseColor = '#6C6C6C';
 
 const PersonIcon = (style) => (
-  <Icon {...style} name='person'/>
+  <Icon {...style} fill={baseColor} name='person'/>
 );
 
 const MobileIcon = (style) => (
-  <Icon {...style} name='smartphone-outline'/>
+  <Icon {...style} fill={baseColor} name='smartphone-outline'/>
 );
 
 const PlusIcon = (style) => (
@@ -51,12 +52,7 @@ export const UserForm = () => {
       <Background/>
       <View style={styles.formContainer}>
         <LogoHeader style={{width:"100%", height:100, marginTop:-20, marginBottom:50}}/>
-        <ProfileAvatar
-          style={styles.profileAvatar}
-          source={require('../assets/image-person.png')}
-          editButton={renderPhotoButton}
-          size="small"
-        />
+        <AvatarPlaceholder style={{width:90, height:90, marginVertical:20}}/>
         <Input
           status='control'
           placeholder='Nombre completo'
@@ -64,7 +60,7 @@ export const UserForm = () => {
           accessoryRight={PersonIcon}
           value={userName}
           onChangeText={setUserName}
-          textStyle={{color:baseColor}}
+          textStyle={{color:'#000'}}
         />
         <Input
           status='control'
@@ -74,7 +70,7 @@ export const UserForm = () => {
           value={userMobile}
           onChangeText={setUserMobile}
           keyboardType={'numeric'}
-          textStyle={{color:baseColor}}
+          textStyle={{color:'#000'}}
         />
         <Select
           style={{width:'100%'}}
@@ -137,6 +133,7 @@ const styles = StyleSheet.create({
   },
   forgotPasswordButton: {
     paddingHorizontal: 0,
+    
   },
   signUpButton: {
     marginVertical: 12,
@@ -144,15 +141,6 @@ const styles = StyleSheet.create({
   },
   socialAuthButton: {
     alignSelf: 'center'
-  },
-  profileAvatar: {
-    marginBottom: 20,
-    width: 92,
-    height: 92,
-    borderRadius: 46,
-    alignSelf: 'center',
-    backgroundColor: '#fff',
-    tintColor: baseColor,
   },
   editAvatarButton: {
     width: 32,
