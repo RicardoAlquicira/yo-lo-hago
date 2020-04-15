@@ -51,6 +51,7 @@ export const ClientHome = () => {
 
   return (
     <Layout style={styles.container} level='1'>
+      <Background/>
       <View style={styles.formContainer}>
         <LogoHeader style={{width:"100%", height:100}}/>
         <Text category='h3'>Buenos días Andres!</Text>

@@ -48,6 +48,7 @@ export const UserForm = () => {
 
   return (
     <Layout style={styles.container} level='1'>
+      <Background/>
       <View style={styles.formContainer}>
         <LogoHeader style={{width:"100%", height:100, marginTop:-20, marginBottom:50}}/>
         <ProfileAvatar

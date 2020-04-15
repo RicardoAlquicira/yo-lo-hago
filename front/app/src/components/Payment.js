@@ -43,6 +43,7 @@ export const Payment = () => {
     <Layout
       style={styles.form}
       level='1'>
+      <Background/>
       <TabView
         selectedIndex={selectedIndex}
         onSelect={index => setSelectedIndex(index)}>
@@ -143,15 +144,17 @@ export const Payment = () => {
 const themedStyles = StyleService.create({
   container: {
     flex: 1,
-    backgroundColor: 'background-basic-color-2',
+    backgroundColor: "rgba(255,255,0,0)",
   },
   tabContainer: {
-    marginTop: 10
+    marginTop: 10,
+    backgroundColor: "rgba(255,255,0,0)",
   },
   form: {
     flex: 1,
     paddingHorizontal: 4,
-    paddingVertical: 24
+    paddingVertical: 24,
+    backgroundColor: "rgba(255,255,0,0)",
   },
   input: {
     marginHorizontal: 12,

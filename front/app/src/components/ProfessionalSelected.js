@@ -9,7 +9,7 @@ const data = [
   {name:'Angel Orozco', age:30, profession:'Plomero', distance:'10 km', experienceTime:5, rate:3.5, fare:0.6},
 ];
 
-export const ProffesionalSelected = () => {
+export const ProfessionalSelected = () => {
 
   const [selectedIndex, setSelectedIndex] = React.useState();
   const [modalVisible, setModalVisible] = React.useState(false);
@@ -24,10 +24,11 @@ export const ProffesionalSelected = () => {
 
   return (
     <Layout style={styles.container} level='1'>
+      <Background/>
       <View style={styles.formContainer}>
-        <LogoHeader style={{width:"100%", height:100}}/>
+        <LogoHeader style={{width:"100%", height:100, marginTop:-30}}/>
         <Text category='h3'>Buenos días Andres!</Text>
-        <Text category='h5'>Estos son los plomeros más cercanos:</Text>
+        <Text category='h6'>Estos son los plomeros más cercanos:</Text>
         <Select
           style={{width:'100%', marginVertical:7 }}
           placeholder="Selecciona uno de la lista"
@@ -37,39 +38,33 @@ export const ProffesionalSelected = () => {
           {data.map(renderOption)}
         </Select>
         <View style={styles.cardContainer}>
-          <View style={{flex:6, flexDirection:'row'}}>
-            <View style={{flex:3}}>
+          <View style={{flexDirection:'row'}}>
+            <View style={{flex:2, justifyContent:'center'}}>
               <Avatar source={require('../assets/image-person.png')} style={styles.profileAvatar}/>
             </View>
-            <View style={{flex:7}}>
-              <View style={{flex:1, flexDirection:'row'}}>
-                <View style={{flex:2}}>
+            <View style={{flex:7, justifyContent:'center'}}>
+              <View style={{flexDirection:'row'}}>
+                <View style={{flex:3}}>
                   <Text>Angel Orozco</Text>
                   <Text>Oficio: Plomero</Text>
-                </View>
-                <View style={{flex:1}}>
-                  <Text>30 años</Text>
-                  <Text>10 km</Text>
-                </View>
-              </View>
-              <View style={{flex:1, flexDirection:'row'}}>
-                <View style={{flex:2}}>
                   <Text>Años de experiencia:</Text>
                   <Text>Evaluación:</Text>
                 </View>
                 <View style={{flex:1}}>
+                  <Text>30 años</Text>
+                  <Text>10 km</Text>
                   <Text>5</Text>
                 </View>
               </View>
             </View>
           </View>
-          <View style={{flex:5}}>
-            <Stars progress={0.7} style={{marginVertical:2, flex:1, flexDirection:'row', justifyContent:'space-around'}}/>
-            <View style={{marginTop:8, flex:1, flexDirection:'row', justifyContent:'space-between'}}>
+          <View>
+            <Stars progress={0.7} style={{alignSelf:'center', height:30, marginTop:5}}/>
+            <View style={{marginTop:5, flexDirection:'row', justifyContent:'space-between'}}>
               <Text>Precio:</Text>
               <PriceBar progress={0.6}/>
             </View>
-            <View style={{marginLeft:50, flex:1, flexDirection:'row', justifyContent:'space-between'}}>
+            <View style={{marginLeft:50, flexDirection:'row', justifyContent:'space-between'}}>
               {['Bajo', 'Promedio', 'Alto'].map(val=><Text style={{fontSize:12}} key={val}>{val}</Text>)}
             </View>
           </View>
@@ -81,7 +76,7 @@ export const ProffesionalSelected = () => {
           Leer comentarios
         </Button>
         <View style={styles.signInContainer}>
-          <Logo style={{width:90, height:90, marginTop:20, marginRight:20}}/>
+          <Logo style={{width:90, height:90, marginRight:20}}/>
           <Button
             style={styles.signInButton}
             size='large'
@@ -130,7 +125,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   signInButton: {
-    marginTop: 40,
+    marginTop: 20,
     width: 200,
     height: 50,
     backgroundColor: 'rgba(22, 155, 213, 1)'
@@ -141,17 +136,13 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     width: '90%',
-    height: 200,
     borderWidth: 1,
-    padding: 5,
-    flex:0.6,
-    flexDirection:'column'
+    padding: 5
   },
   profileAvatar: {
-    marginBottom: 20,
-    width: 75,
-    height: 75,
-    borderRadius: 37.5,
+    width: 50,
+    height: 50,
+    borderRadius: 25,
     alignSelf: 'center',
     backgroundColor: '#fff',
     tintColor: '#6C6C6C',

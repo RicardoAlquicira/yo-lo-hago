@@ -8,14 +8,14 @@ const EmailIcon = (style) => (
   <Icon {...style} name='email-outline'/>
 );
 
-export const LoginPage = () => {
+export const LoginPage = ({navigation}) => {
 
   const [email, setEmail] = React.useState();
   const [password, setPassword] = React.useState();
   const [passwordVisible, setPasswordVisible] = React.useState(false);
 
   const onSignInButtonPress = () => {
-    // navigation && navigation.goBack();
+    navigation.navigate('UserForm');
   };
 
   const onSignUpButtonPress = () => {
@@ -34,6 +34,7 @@ export const LoginPage = () => {
 
   return (
     <Layout style={styles.container} level='1'>
+      <Background/>
       <View style={styles.formContainer}>
         <LogoHeader style={{width:"100%", height:100, marginTop:-20, marginBottom:50}}/>
         <Input
