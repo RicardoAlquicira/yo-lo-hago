@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Icon, Input, Button, Text, Layout, Select, SelectItem } from '@ui-kitten/components';
+import { Icon, Input, Button, Text, Layout, CheckBox, SelectItem } from '@ui-kitten/components';
 import {Logo, LogoHeader} from "./Logo"
 
 const CameraIcon = (style) => (
@@ -34,12 +34,11 @@ const useInputState = (initialValue = '') => {
   return { value, onChangeText: setValue };
 };
 
-export const ProfessionalHome = () => {
+export const ServiceAssignment = () => {
 
-  const [userName, setUserName] = React.useState();
-  const [userMobile, setUserMobile] = React.useState();
-  const [selectedIndex, setSelectedIndex] = React.useState();
-  const [expectedTime, setExpectedTime] = React.useState();
+  const [fareByService, setFareByService] = React.useState();
+  const [timeEstimated, setTimeEstimated] = React.useState();
+  const [warranty, setWarranty] = React.useState(false);
   const multilineInputState = useInputState();
 
   const onSignInButtonPress = () => {
@@ -55,52 +54,62 @@ export const ProfessionalHome = () => {
       <View style={styles.formContainer}>
         <LogoHeader style={{width:"100%", height:100}}/>
         <Text category='h3'>Buenos días Luis!</Text>
-        <Select
-          style={{width:'100%', marginVertical:7 }}
-          placeholder="¿A qué te dedicas?"
-          value={selectedIndex && data[selectedIndex.row]}
-          selectedIndex={selectedIndex}
-          onSelect={index => setSelectedIndex(index)}>
-          {data.map(renderOption)}
-        </Select>
+        <Text category='h5'>Asignación de servicio:</Text>
         <Input
           multiline={true}
           textStyle={{ minHeight: 64 }}
-          placeholder='¿Cuál es tu experiencia?, cuentanos'
+          placeholder='Se rompio la tuberia del fregadero'
           {...multilineInputState}
         />
-        <View style={{width:"100%", height:90}}>
+        <View style={{width:"100%", height:110}}>
           <View style={{flex:1, flexDirection: 'row'}}>
             <View style={{width:"70%"}}>
-              <Text>Puedes agregar fotografias sobre tu trabajo!</Text>
+              <Text style={{marginVertical:5}}>Costo recomendado: $230.00</Text>
               <View style={{flex:1, flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={{marginRight:10}}>Años de experiencia:</Text>
+                <Text style={{marginRight:10}}>Costo por reparación:</Text>
                 <Input
+                  size='small'
+                  accessoryLeft={()=><Text>$</Text>}
                   placeholder="0"
                   keyboardType={'numeric'}
-                  value={userName}
-                  onChangeText={setUserName}
+                  value={fareByService}
+                  onChangeText={setFareByService}
+                />
+              </View>
+              <View style={{flex:1, flexDirection: 'row', alignItems: 'center'}}>
+                <Text style={{marginRight:10}}>Tiempo estimado:</Text>
+                <Input
+                  size='small'
+                  accessoryRight={()=><Text>dias</Text>}
+                  placeholder="0"
+                  keyboardType={'numeric'}
+                  value={timeEstimated}
+                  onChangeText={setTimeEstimated}
                 />
               </View>
             </View>
             <Icon style={{width:90, height:90}} name='camera-outline'/>
           </View>
         </View>
-        <Select
-          style={{width:'100%'}}
-          placeholder="Horarios en los que prefieres trabajar"
-          value={expectedTime && expectedTimeData[expectedTime.row]}
-          selectedIndex={expectedTime}
-          onSelect={index => setExpectedTime(index)}>
-          {expectedTimeData.map(renderOption)}
-        </Select>
+        <Input
+          multiline={true}
+          textStyle={{ minHeight: 64 }}
+          placeholder='Comentarios: Incluye material!!!!'
+          {...multilineInputState}
+        />
+        <CheckBox
+          style={{alignSelf:'flex-start', backgroundColor:"#fff8", borderWidth:1, borderColor:"#ccc", padding:4}}
+          checked={warranty}
+          onChange={nextChecked => setWarranty(nextChecked)}>
+          Incluye garantía de 30 dias
+        </CheckBox>
         <View style={styles.signInContainer}>
           <Logo style={{width:90, height:90, marginTop:20, marginRight:20}}/>
           <Button
             style={styles.signInButton}
             size='large'
             onPress={onSignInButtonPress}>
-            Enviar
+            Enviar propuesta
           </Button>
         </View>
       </View>

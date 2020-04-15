@@ -14,6 +14,7 @@ import {UserForm} from "./src/components/UserForm"
 import {ClientHome} from "./src/components/ClientHome"
 import {ProfessionalSelected} from "./src/components/ProfessionalSelected"
 import {ProfessionalHome} from "./src/components/ProfessionalHome"
+import {ServiceAssignment} from "./src/components/ServiceAssignment"
 import Background from "./src/components/Background"
 
 export default () => (
@@ -21,7 +22,7 @@ export default () => (
     <IconRegistry icons={EvaIconsPack}/>
     <ApplicationProvider {...eva} theme={eva.light}>
       <Background/>
-      <ProfessionalHome/>
+      <ServiceAssignment/>
     </ApplicationProvider>
   </>
 );
