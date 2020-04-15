@@ -16,7 +16,7 @@ import lombok.Setter;
 public class Profession {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private Long id;
 	@Column(length = 40)
 	private String name;
 	@Column(length = 40)
