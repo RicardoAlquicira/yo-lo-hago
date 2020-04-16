@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Svg, {
   Rect,
-  RadialGradient,
+  LinearGradient,
   Stop,
   Defs
 } from 'react-native-svg';
@@ -14,19 +14,17 @@ export default Background = ({color="white"}) => {
     ]}>
       <Svg height="100%" width="100%">
         <Defs>
-          <RadialGradient
+          <LinearGradient
             id="grad"
-            cx="50%"
-            cy="65%"
-            fx="50%"
-            fy="65%"
-            rx="400"
-            ry="450"
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="100%"
             gradientUnits="userSpaceOnUse"
           >
-            <Stop offset="0" stopColor="#ffffff" stopOpacity="1" />
-            <Stop offset="1" stopColor="#015478" stopOpacity="0.2" />
-          </RadialGradient>
+            <Stop offset="0" stopColor="#015478" stopOpacity="0.18" />
+            <Stop offset="0.8" stopColor="#ffffff" stopOpacity="1" />
+          </LinearGradient>
         </Defs>
         <Rect x="0" y="0" width="100%" height="100%" fill="url(#grad)" />
       </Svg>

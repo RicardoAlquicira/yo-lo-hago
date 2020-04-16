@@ -5,27 +5,34 @@ import { GoogleSigninButton } from '@react-native-community/google-signin';
 import {Logo, LogoHeader} from "./Logo"
 
 const baseColor = '#6C6C6C';
+const baseBorderColor = '#08f';
 
+const PersonIcon = (style) => (
+  <Icon {...style} fill={baseColor} name='person'/>
+);
+const EmailIcon = (style) => (
+  <Icon {...style} fill={baseColor} name='email-outline'/>
+);
 
-export const LoginPage = ({fly}) => {
+export const LoginPage = ({fly, showAlert}) => {
   const [email, setEmail] = React.useState();
   const [password, setPassword] = React.useState();
+  const [repassword, setRepassword] = React.useState();
   const [passwordVisible, setPasswordVisible] = React.useState(false);
-  const [loginFail, setLoginFail] = React.useState(false);
-
-  const EmailIcon = (style) => (
-    <Icon {...style} fill={baseColor} name='email-outline'/>
-  );
+  const [userName, setUserName] = React.useState();
+  const [registering, setRegistering] = React.useState(true);
 
   const onSignInButtonPress = () => {
+    if(registering && password!==repassword)
+      return showAlert("Las contraseñas ingresadas no coinciden.", null);
     fly.post("/users/login", {email, password}).then(res=>{
       if(!res)
-        setLoginFail(true);
+        showAlert("Usuario o contraseña incorrecta.", "Ok");
     });
   };
 
   const onSignUpButtonPress = () => {
-  // navigation && navigation.navigate('SignUp4');
+    setRegistering(oldVal=>!oldVal);
   };
 
   const onForgotPasswordButtonPress = () => {
@@ -42,72 +49,87 @@ export const LoginPage = ({fly}) => {
     <Layout style={styles.container} level='1'>
       <Background/>
       <View style={styles.formContainer}>
-        <LogoHeader style={{width:"100%", height:100, marginTop:-20, marginBottom:50}}/>
-        <Input
-          status='control'
-          placeholder='Email'
-          placeholderTextColor = {baseColor}
-          textStyle={{color:'#000'}}
-          accessoryRight={EmailIcon}
-          value={email}
-          onChangeText={setEmail}
-        />
-        <Input
-          style={styles.passwordInput}
-          status='control'
-          placeholder='Password'
-          placeholderTextColor = {baseColor}
-          textStyle={{color:'#000'}}
-          accessoryRight={renderIcon}
-          value={password}
-          secureTextEntry={!passwordVisible}
-          onChangeText={setPassword}
-        />
-        <View style={styles.signInContainer}>
-          <Logo style={{width:90, height:90, marginTop:20, marginRight:20}}/>
-          <Button
-            style={styles.signInButton}
-            size='large'
-            onPress={onSignInButtonPress}>
-            Entrar
-          </Button>
-        </View>
-        <View style={styles.forgotPasswordContainer}>
-          <Button
-            appearance='ghost'
+        <LogoHeader style={{width:"100%", height:100}}/>
+        <Text category='h2'>{registering?'Registrarse':'Iniciar sesión'}</Text>
+        <View style={{width:"100%", flex:0.8, justifyContent:'space-around'}}>
+          { registering && 
+          <Input
+            style={{borderColor:baseBorderColor}}
             status='control'
-            onPress={onForgotPasswordButtonPress}>
-            <Text style={{color:"rgb(163,0,20)"}}>¿Olvidaste tu contraseña?</Text>
+            placeholder='Nombre completo'
+            placeholderTextColor = {baseColor}
+            accessoryRight={PersonIcon}
+            value={userName}
+            onChangeText={setUserName}
+            textStyle={{color:'#000'}}
+          />
+          }
+          <Input
+            style={{borderColor:baseBorderColor}}
+            status='control'
+            placeholder='Email'
+            placeholderTextColor = {baseColor}
+            textStyle={{color:'#000'}}
+            accessoryRight={EmailIcon}
+            value={email}
+            onChangeText={setEmail}
+          />
+          <Input
+            style={{borderColor:baseBorderColor}}
+            status='control'
+            placeholder='Password'
+            placeholderTextColor = {baseColor}
+            textStyle={{color:'#000'}}
+            accessoryRight={renderIcon}
+            value={password}
+            secureTextEntry={!passwordVisible}
+            onChangeText={setPassword}
+          />
+          {registering &&
+            <Input
+            style={{borderColor:baseBorderColor}}
+            status='control'
+            placeholder='Repetir password'
+            placeholderTextColor = {baseColor}
+            textStyle={{color:'#000'}}
+            value={repassword}
+            secureTextEntry={true}
+            onChangeText={setRepassword}
+          />
+          }
+          <View style={styles.signInContainer}>
+            <Logo style={{width:90, height:90, marginTop:20, marginRight:20}}/>
+            <Button
+              style={styles.signInButton}
+              size='large'
+              onPress={onSignInButtonPress}>
+              {registering?'Registrarse':'Entrar'}
+            </Button>
+          </View>
+          {!registering && <>
+            <View style={styles.forgotPasswordContainer}>
+              <Button
+                appearance='ghost'
+                status='control'
+                onPress={onForgotPasswordButtonPress}>
+                <Text style={{color:"rgb(163,0,20)"}}>¿Olvidaste tu contraseña?</Text>
+              </Button>
+            </View>
+            <GoogleSigninButton
+            style={styles.socialAuthButton}
+            size={GoogleSigninButton.Size.Wide}
+            color={GoogleSigninButton.Color.Light}
+            onPress={()=>{}}/>
+          </>}
+          <Button
+            style={styles.signUpButton}
+            appearance='filled'
+            status="basic"
+            onPress={onSignUpButtonPress}>
+            {registering?'¿Ya tienes una cuenta? Inicia sesión.':'¿No tienes una cuenta? Registrate.'}
           </Button>
         </View>
-        <GoogleSigninButton
-        style={styles.socialAuthButton}
-        size={GoogleSigninButton.Size.Wide}
-        color={GoogleSigninButton.Color.Light}
-        onPress={()=>{}}/>
-        <Button
-          style={styles.signUpButton}
-          appearance='filled'
-          status="basic"
-          onPress={onSignUpButtonPress}>
-          ¿No tienes una cuenta? Registrate.
-        </Button>
       </View>
-      <Modal
-        visible={loginFail}
-        backdropStyle={{backgroundColor: 'rgba(0, 0, 0, 0.5)'}}
-        onBackdropPress={() => setLoginFail(false)}>
-        <Card disabled={true}>
-          <View style={{flexDirection:'row', alignItems:'center'}}>
-            <Icon style={{width:32, height:32, tintColor:'rgb(0,149,255)', marginRight:20}} name='alert-circle'/>
-            <Text style={{marginVertical:20}}>Usuario o contraseña incorrecta.</Text>
-          </View>
-          <Button onPress={() => setLoginFail(false)}
-          status='info'>
-            Ok
-          </Button>
-        </Card>
-      </Modal>
       <Text style={[StyleSheet.absoluteFill, {width:'100%', textAlign:'center', top:630}]}>
         Copyright © 2020 Yo lo hago!!
       </Text>
@@ -129,9 +151,6 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   signInLabel: {
-    marginTop: 16,
-  },
-  passwordInput: {
     marginTop: 16,
   },
   signInButton: {

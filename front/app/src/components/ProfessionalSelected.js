@@ -6,6 +6,8 @@ import Stars from "./Stars"
 import PriceBar from "./PriceBar"
 import {AvatarPlaceholder} from "./AvatarPlaceholder"
 
+const baseBorderColor = '#08f';
+
 const data = [
   {name:'Angel Orozco', age:30, profession:'Plomero', distance:'10 km', experienceTime:5, rate:3.5, fare:0.6},
 ];
@@ -31,7 +33,7 @@ export const ProfessionalSelected = () => {
         <Text category='h3'>Buenos días Andres!</Text>
         <Text category='h6'>Estos son los plomeros más cercanos:</Text>
         <Select
-          style={{width:'100%', marginVertical:7 }}
+          style={{...styles.select, width:'90%', marginVertical:7 }}
           placeholder="Selecciona uno de la lista"
           value={selectedIndex && data[selectedIndex.row].name}
           selectedIndex={selectedIndex}
@@ -86,10 +88,10 @@ export const ProfessionalSelected = () => {
           </Button>
         </View>
       </View>
-      <Modal visible={modalVisible}>
-        <Card disabled={true} style={{borderRadius:20}}>
+      <Modal visible={modalVisible} backdropStyle={{backgroundColor:'#0007'}}>
+        <Card disabled={true} style={{borderRadius:20, padding:30}}>
           <Text style={{marginBottom:15}} category='h6'>Comentarios:</Text>
-          {[...Array(5).keys()].map(val=>
+          {[...Array(6).keys()].map(val=>
             <View style={{flexDirection:"row", marginVertical:3}} key={val}>
               <AvatarPlaceholder style={styles.profileMiniAvatar}/>
               <Text>Luisa: Excelente servicio!!</Text>
@@ -137,7 +139,9 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     width: '90%',
-    borderWidth: 1,
+    borderRadius:4, 
+    borderColor:baseBorderColor, 
+    borderWidth:1,
     padding: 5
   },
   profileAvatar: {
@@ -153,5 +157,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignSelf: 'center',
   },
+  select: {
+    width:'100%', 
+    borderRadius:4, 
+    borderColor:baseBorderColor, 
+    borderWidth:1
+  }
 });
 

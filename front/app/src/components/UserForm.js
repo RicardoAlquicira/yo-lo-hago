@@ -6,6 +6,7 @@ import {AvatarPlaceholder} from "./AvatarPlaceholder"
 import { FlyContext } from '../lib/flyContext';
 
 const baseColor = '#6C6C6C';
+const baseBorderColor = '#08f';
 
 const PersonIcon = (style) => (
   <Icon {...style} fill={baseColor} name='person'/>
@@ -65,22 +66,26 @@ export const UserForm = () => {
     <Layout style={styles.container} level='1'>
       <Background/>
       <View style={styles.formContainer}>
-        <LogoHeader style={{width:"100%", height:100, marginTop:-20, marginBottom:50}}/>
+        <LogoHeader style={{width:"100%", height:100}}/>
         <View flexDirection="row">
           <View style={{flex:1}}/>
           <AvatarPlaceholder uploadButton={true} style={{width:90, height:90, marginVertical:20}}/>
           <View style={{flex:1, flexDirection:"row", justifyContent:"flex-end"}}>
             <Input
-              style={{flex:0.65, alignSelf:'flex-end'}}
+              style={{borderColor:baseBorderColor, flex:0.65, alignSelf:'flex-end'}}
+              status='control'
               accessoryRight={()=><Text>años</Text>}
               placeholder="0"
+              placeholderTextColor = {baseColor}
               keyboardType={'numeric'}
               value={age}
               onChangeText={setAge}
+              textStyle={{color:'#000'}}
             />
           </View>
         </View>
         <Input
+          style={{borderColor:baseBorderColor}}
           status='control'
           placeholder='Nombre completo'
           placeholderTextColor = {baseColor}
@@ -90,6 +95,7 @@ export const UserForm = () => {
           textStyle={{color:'#000'}}
         />
         <Input
+          style={{borderColor:baseBorderColor}}
           status='control'
           placeholder='Email'
           placeholderTextColor = {baseColor}
@@ -99,6 +105,7 @@ export const UserForm = () => {
           onChangeText={setEmail}
         />
         <Input
+          style={{borderColor:baseBorderColor}}
           status='control'
           placeholder='Número de celular (WhatsApp preferente)'
           placeholderTextColor = {baseColor}
@@ -109,7 +116,7 @@ export const UserForm = () => {
           textStyle={{color:'#000'}}
         />
         <Select
-          style={{width:'100%'}}
+          style={styles.select}
           placeholder="Selecciona una opción"
           value={selectedIndex && data[selectedIndex.row]}
           selectedIndex={selectedIndex}
@@ -177,6 +184,12 @@ const styles = StyleSheet.create({
   },
   socialAuthButton: {
     alignSelf: 'center'
+  },
+  select: {
+    width:'100%', 
+    borderRadius:4, 
+    borderColor:baseBorderColor, 
+    borderWidth:1
   }
 });
 

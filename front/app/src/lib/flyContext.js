@@ -112,7 +112,7 @@ function FlyContextProvider(props) {
       {
         isLoggedIn && userData ?
         props.children :
-        <LoginPage fly={flyState}/>
+        <LoginPage fly={flyState} showAlert={showAlert}/>
       }
       <Modal
         visible={showNotification}

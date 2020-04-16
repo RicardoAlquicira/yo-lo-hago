@@ -3,6 +3,8 @@ import { StyleSheet, View } from 'react-native';
 import { Icon, Input, Button, Text, Layout, CheckBox, SelectItem } from '@ui-kitten/components';
 import {Logo, LogoHeader} from "./Logo"
 
+const baseBorderColor = '#08f';
+
 const CameraIcon = (style) => (
   <Icon {...style} name='camera-outline'/>
 );
@@ -57,6 +59,7 @@ export const ServiceAssignment = () => {
         <Text category='h3'>Buenos días Luis!</Text>
         <Text category='h5'>Asignación de servicio:</Text>
         <Input
+          style={styles.select}
           multiline={true}
           textStyle={{ minHeight: 64 }}
           placeholder='Se rompio la tuberia del fregadero'
@@ -69,6 +72,7 @@ export const ServiceAssignment = () => {
               <View style={{flex:1, flexDirection: 'row', alignItems: 'center'}}>
                 <Text style={{marginRight:10}}>Costo por reparación:</Text>
                 <Input
+                  style={styles.select}
                   size='small'
                   accessoryLeft={()=><Text>$</Text>}
                   placeholder="0"
@@ -80,6 +84,7 @@ export const ServiceAssignment = () => {
               <View style={{flex:1, flexDirection: 'row', alignItems: 'center'}}>
                 <Text style={{marginRight:10}}>Tiempo estimado:</Text>
                 <Input
+                  style={styles.select}
                   size='small'
                   accessoryRight={()=><Text>dias</Text>}
                   placeholder="0"
@@ -93,13 +98,14 @@ export const ServiceAssignment = () => {
           </View>
         </View>
         <Input
+          style={styles.select}
           multiline={true}
           textStyle={{ minHeight: 64 }}
           placeholder='Comentarios: Incluye material!!!!'
           {...multilineInputState}
         />
         <CheckBox
-          style={{alignSelf:'flex-start', backgroundColor:"#fff8", borderWidth:1, borderColor:"#ccc", padding:4}}
+          style={{alignSelf:'flex-start', padding:4}}
           checked={warranty}
           onChange={nextChecked => setWarranty(nextChecked)}>
           Incluye garantía de 30 dias
@@ -144,5 +150,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
   },
+  select: {
+    borderColor:baseBorderColor
+  }
 });
 
