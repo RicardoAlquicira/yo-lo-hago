@@ -1,10 +1,25 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Svg, {
   Defs, Mask, Rect, Circle, Ellipse
 } from 'react-native-svg';
+import { Icon, Button } from '@ui-kitten/components';
 
-export const AvatarPlaceholder = (style) => {
+const PlusIcon = (style) => (
+  <Icon {...style} name='plus'/>
+);
+const RenderPhotoButton = () => (
+  <Button
+    style={styles.editAvatarButton}
+    size='small'
+    accessoryRight={PlusIcon}
+    onPress={()=>{
+      console.log("upload picture");
+    }}
+  />
+);
+
+export const AvatarPlaceholder = ({style, uploadButton}) => {
   return (
     <View {...style} >
       <Svg height="100%" width="100%" viewBox="0 0 200 200">
@@ -28,6 +43,17 @@ export const AvatarPlaceholder = (style) => {
         <Circle r="100" cx="100" cy="100" mask="url(#hole)" fill="rgba(1,84,120,18)"/>
         <Circle r="100" cx="100" cy="100" mask="url(#border)" fill="rgba(1,84,120,18)"/>
       </Svg>
+      {uploadButton && <RenderPhotoButton/>}
     </View>
   );
 }
+const styles = StyleSheet.create({
+  editAvatarButton: {
+    ...StyleSheet.absoluteFill,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    top:60,
+    left:60
+  }
+});

@@ -3,7 +3,7 @@ import { StyleSheet, View, TouchableWithoutFeedback } from 'react-native';
 import { Icon, Input, Button, Text, Layout, Select, SelectItem, IndexPath } from '@ui-kitten/components';
 import {Logo, LogoHeader} from "./Logo"
 import {AvatarPlaceholder} from "./AvatarPlaceholder"
-import ProfileAvatar from "./ProfileAvatar"
+import { FlyContext } from '../lib/flyContext';
 
 const baseColor = '#6C6C6C';
 
@@ -15,16 +15,8 @@ const MobileIcon = (style) => (
   <Icon {...style} fill={baseColor} name='smartphone-outline'/>
 );
 
-const PlusIcon = (style) => (
-  <Icon {...style} name='plus'/>
-);
-
-const renderPhotoButton = () => (
-  <Button
-    style={styles.editAvatarButton}
-    size='small'
-    accessoryRight={PlusIcon}
-  />
+const EmailIcon = (style) => (
+  <Icon {...style} fill={baseColor} name='email-outline'/>
 );
 
 const data = [
@@ -35,12 +27,34 @@ const data = [
 
 export const UserForm = () => {
 
-  const [userName, setUserName] = React.useState();
-  const [userMobile, setUserMobile] = React.useState();
-  const [selectedIndex, setSelectedIndex] = React.useState();
-
-  const onSignInButtonPress = () => {
-    // navigation && navigation.goBack();
+  const {fly, userData, showAlert} = React.useContext(FlyContext);
+  const [age, setAge] = React.useState(userData.age.toString());
+  const [email, setEmail] = React.useState(userData.email);
+  const [userName, setUserName] = React.useState(userData.name);
+  const [userMobile, setUserMobile] = React.useState(userData.phone);
+  const [selectedIndex, setSelectedIndex] = React.useState(new IndexPath(userData.isProfessional?(userData.isClient?2:0):(userData.isClient?1:2)));
+  
+  const onSignUpButtonPress = () => {
+    let user = {...userData, age, email, name:userName, phone:userMobile};
+    if(selectedIndex){
+      switch(selectedIndex.row){
+        case 0:
+          user.isClient=false;
+          user.isProfessional=true;
+          break;
+        case 1:
+          user.isClient=true;
+          user.isProfessional=false;
+          break;
+        default:
+          user.isClient=true;
+          user.isProfessional=true;
+      }
+    }
+    fly.post("/users", user).then(res=>{
+      // console.log(res);
+      showAlert("Perfil guardado!", null);
+    });
   };
 
   const renderOption = (title, idx) => (
@@ -52,7 +66,20 @@ export const UserForm = () => {
       <Background/>
       <View style={styles.formContainer}>
         <LogoHeader style={{width:"100%", height:100, marginTop:-20, marginBottom:50}}/>
-        <AvatarPlaceholder style={{width:90, height:90, marginVertical:20}}/>
+        <View flexDirection="row">
+          <View style={{flex:1}}/>
+          <AvatarPlaceholder uploadButton={true} style={{width:90, height:90, marginVertical:20}}/>
+          <View style={{flex:1, flexDirection:"row", justifyContent:"flex-end"}}>
+            <Input
+              style={{flex:0.65, alignSelf:'flex-end'}}
+              accessoryRight={()=><Text>años</Text>}
+              placeholder="0"
+              keyboardType={'numeric'}
+              value={age}
+              onChangeText={setAge}
+            />
+          </View>
+        </View>
         <Input
           status='control'
           placeholder='Nombre completo'
@@ -61,6 +88,15 @@ export const UserForm = () => {
           value={userName}
           onChangeText={setUserName}
           textStyle={{color:'#000'}}
+        />
+        <Input
+          status='control'
+          placeholder='Email'
+          placeholderTextColor = {baseColor}
+          textStyle={{color:'#000'}}
+          accessoryRight={EmailIcon}
+          value={email}
+          onChangeText={setEmail}
         />
         <Input
           status='control'
@@ -85,8 +121,8 @@ export const UserForm = () => {
           <Button
             style={styles.signInButton}
             size='large'
-            onPress={onSignInButtonPress}>
-            Siguiente
+            onPress={onSignUpButtonPress}>
+            Aceptar
           </Button>
         </View>
       </View>
@@ -141,11 +177,6 @@ const styles = StyleSheet.create({
   },
   socialAuthButton: {
     alignSelf: 'center'
-  },
-  editAvatarButton: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
   }
 });
 

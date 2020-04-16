@@ -36,5 +36,6 @@ public class User {
 	@Column(length = 600)
 	private String experience;
 	private WorkSchedule workSchedule;
-	
+	private Boolean isProfessional;
+	private Boolean isClient;
 }

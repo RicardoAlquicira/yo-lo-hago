@@ -74,11 +74,10 @@ export const LoginPage = ({fly}) => {
         </View>
         <View style={styles.forgotPasswordContainer}>
           <Button
-            style={styles.forgotPasswordButton}
             appearance='ghost'
             status='control'
             onPress={onForgotPasswordButtonPress}>
-            ¿Olvidaste tu contraseña?
+            <Text style={{color:"rgb(163,0,20)"}}>¿Olvidaste tu contraseña?</Text>
           </Button>
         </View>
         <GoogleSigninButton
@@ -149,10 +148,6 @@ const styles = StyleSheet.create({
     width: "100%",
     flexDirection: 'row',
     justifyContent: 'flex-start',
-  },
-  forgotPasswordButton: {
-    paddingHorizontal: 0,
-    color:baseColor
   },
   signUpButton: {
     marginVertical: 12,
