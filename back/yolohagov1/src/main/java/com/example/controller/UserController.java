@@ -32,7 +32,7 @@ public class UserController {
 		return userRepository.findAll();
 	}
 
-	@GetMapping("/login")
+	@PostMapping("/login")
 	public @ResponseBody User login(@RequestBody User from) {
 		User user = userRepository.findByEmail(from.getEmail());
 		if(user!=null) {

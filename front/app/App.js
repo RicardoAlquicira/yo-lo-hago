@@ -13,13 +13,13 @@ import * as eva from '@eva-design/eva';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Background from "./src/components/Background"
-import {LoginPage} from "./src/components/LoginPage"
 import {UserForm} from "./src/components/UserForm"
 import {ClientHome} from "./src/components/ClientHome"
 import {ProfessionalSelected} from "./src/components/ProfessionalSelected"
 import {ProfessionalHome} from "./src/components/ProfessionalHome"
 import {ServiceAssignment} from "./src/components/ServiceAssignment"
 import {Payment} from "./src/components/Payment"
+import {FlyContextProvider} from "./src/lib/flyContext";
 
 const { Navigator, Screen } = createDrawerNavigator();
 
@@ -27,7 +27,6 @@ const DrawerContent = ({ navigation, state }) => (
   <Drawer
     selectedIndex={state.index}
     onSelect={index => navigation.navigate(state.routeNames[index.row])}>
-    <DrawerItem title='Login' />
     <DrawerItem title='UserForm' />
     <DrawerItem title='ClientHome' />
     <DrawerItem title='ProfessionalSelected' />
@@ -40,7 +39,6 @@ const DrawerContent = ({ navigation, state }) => (
 export const DrawerNavigator = () => (
   <Navigator drawerContent={props => <DrawerContent {...props}/>} 
   headerMode="none" animationEnabled={false} initialRouteName="UserForm">
-    <Screen name="Login" component={LoginPage} />
     <Screen name="UserForm" component={UserForm} />
     <Screen name="ClientHome" component={ClientHome} />
     <Screen name="ProfessionalSelected" component={ProfessionalSelected} />
@@ -54,9 +52,11 @@ export const App = () => (
   <>
     <IconRegistry icons={EvaIconsPack}/>
     <ApplicationProvider {...eva} theme={eva.light}>
-      <NavigationContainer>
-        <DrawerNavigator/>
-      </NavigationContainer>
+      <FlyContextProvider>
+        <NavigationContainer>
+          <DrawerNavigator/>
+        </NavigationContainer>
+      </FlyContextProvider>
     </ApplicationProvider>
   </>
 );
