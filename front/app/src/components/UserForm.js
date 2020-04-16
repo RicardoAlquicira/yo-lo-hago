@@ -29,10 +29,10 @@ const data = [
 export const UserForm = () => {
 
   const {fly, userData, showAlert, forceUpdate} = React.useContext(FlyContext);
-  const [age, setAge] = React.useState(userData.age.toString());
+  const [age, setAge] = React.useState(userData.age?userData.age.toString():'');
   const [email, setEmail] = React.useState(userData.email);
   const [userName, setUserName] = React.useState(userData.name);
-  const [userMobile, setUserMobile] = React.useState(userData.phone);
+  const [userMobile, setUserMobile] = React.useState(userData.phone?userData.phone:'');
   const [selectedIndex, setSelectedIndex] = React.useState(new IndexPath(userData.isProfessional?(userData.isClient?2:0):(userData.isClient?1:2)));
   
   const onSignUpButtonPress = () => {

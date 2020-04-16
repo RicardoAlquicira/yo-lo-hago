@@ -20,6 +20,7 @@ import {ProfessionalHome} from "./src/components/ProfessionalHome"
 import {ProfessionalForm} from "./src/components/ProfessionalForm"
 import {ServiceAssignment} from "./src/components/ServiceAssignment"
 import {Payment} from "./src/components/Payment"
+import {LocationMap} from "./src/components/LocationMap"
 import {FlyContextProvider, FlyContext} from "./src/lib/flyContext";
 
 const { Navigator, Screen } = createDrawerNavigator();
@@ -29,7 +30,7 @@ const DrawerContent = ({ navigation, state, userLogout, userData }) => {
     <Drawer
       selectedIndex={state.index}
       onSelect={index => {
-        if(state.routeNames.length===index.row)
+        if(state.routeNames.length===8)
           return userLogout();
         return navigation.navigate(state.routeNames[index.row]);
       }}>
@@ -40,6 +41,7 @@ const DrawerContent = ({ navigation, state, userLogout, userData }) => {
       {userData.isProfessional && <DrawerItem title='Perfil (Trabajador)' />}
       {userData.isProfessional && <DrawerItem title='Propuestas de servicio' />}
       {userData.isClient && <DrawerItem title='Pagos' />}
+      <DrawerItem title='LocationMap' />
       <DrawerItem title='Logout' />
     </Drawer>
   );
@@ -57,6 +59,7 @@ export const DrawerNavigator = () => {
       {userData.isProfessional && <Screen name="ProfessionalForm" component={ProfessionalForm} />}
       {userData.isProfessional && <Screen name="ServiceAssignment" component={ServiceAssignment} />}
       {userData.isClient && <Screen name="Payment" component={Payment} />}
+      <Screen name="LocationMap" component={LocationMap} />
     </Navigator>
   );
 }

@@ -4,25 +4,24 @@ import { Icon, Input, Button, Text, Layout, Select, SelectItem } from '@ui-kitte
 import {Logo, LogoHeader} from "./Logo"
 import { FlyContext } from '../lib/flyContext';
 
-const expectedTimeData = [
-  {name:'Urgente menos de 1 hora'},
-  {name:'1 hora - 3 horas'},
-  {name:'1 a 3 días'}
-];
-
 const useInputState = (initialValue = '') => {
   const [value, setValue] = useState(initialValue);
   return { value, onChangeText: setValue };
 };
 
-export const ClientHome = () => {
+const PinIcon = (style) => (
+  <Icon {...style} fill='#000' name='pin-outline'/>
+);
 
+export const ClientHome = ({route, navigation}) => {
   const {fly, userData, showAlert, forceUpdate} = useContext(FlyContext);
   const [userName, setUserName] = useState();
   const [selectedIndex, setSelectedIndex] = useState();
-  const [expectedTime, setExpectedTime] = useState();
   const [professionList, setProfessionList] = useState([]);
   const multilineInputState = useInputState();
+  const [coords, setCoords] = useState();
+
+  console.log(coords);
 
   const onSignInButtonPress = () => {
     // navigation && navigation.goBack();
@@ -31,7 +30,12 @@ export const ClientHome = () => {
   const renderOption = (element, idx) => (
     <SelectItem title={element.name} key={idx}/>
   );
-
+  
+  useEffect(() => {
+    if (route.params?.coords) {
+      setCoords(route.params?.coords);
+    }
+  }, [route.params?.coords]);
   
   useEffect(()=>{
     fly.get("/professions").then(res=>{
@@ -44,7 +48,7 @@ export const ClientHome = () => {
       <Background/>
       <View style={styles.formContainer}>
         <LogoHeader style={{width:"100%", height:100}}/>
-        <Text category='h3'>Buenos días {userData.name}!</Text>
+        <Text category='h3' style={{textAlign:'center'}}>Buenos días {userData.name}!</Text>
         <Text category='h5'>¿Qué necesitar arreglar?</Text>
         <Select
           style={{width:'100%', marginVertical:7 }}
@@ -64,24 +68,17 @@ export const ClientHome = () => {
         <View style={{flex:1, flexDirection: 'row'}}>
           <View style={{width:"70%"}}>
             <Text>Puedes adjuntar una fotografía de lo que desees arreglar</Text>
-            <Input
-              placeholder='Ingresa tu código postal'
-              keyboardType={'numeric'}
-              value={userName}
-              onChangeText={setUserName}
-            />
+            <Button
+              style={{width:200, height:20}}
+              accessoryLeft={PinIcon}
+              appearance='outline'
+              onPress={()=>navigation.navigate("LocationMap", {coords})}>
+              Ubicación
+            </Button>
           </View>
           <Icon style={{width:90, height:90}} name='camera-outline'/>
         </View>
         </View>
-        <Select
-          style={{width:'100%'}}
-          placeholder="Tiempo esperado"
-          value={expectedTime && expectedTimeData[expectedTime.row]}
-          selectedIndex={expectedTime}
-          onSelect={index => setExpectedTime(index)}>
-          {expectedTimeData.map(renderOption)}
-        </Select>
         <View style={styles.signInContainer}>
           <Logo style={{width:90, height:90, marginTop:20, marginRight:20}}/>
           <Button
@@ -113,7 +110,6 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   signInButton: {
-    marginTop: 40,
     width: 200,
     height: 50,
     backgroundColor: 'rgba(22, 155, 213, 1)'

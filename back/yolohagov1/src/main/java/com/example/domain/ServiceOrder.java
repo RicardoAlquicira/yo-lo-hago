@@ -1,5 +1,7 @@
 package com.example.domain;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -23,9 +25,21 @@ public class ServiceOrder {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "clientId")
 	private User client;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "professionalId")
+	private User professional;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "professionId")
+	private Profession profession;
 	@Column(length = 200)
 	private String description;
-	@Column(length = 100)
-	private String location;
-	private DesiredTime desiredTime;
+	@Column(length = 40)
+	private String latitude;
+	@Column(length = 40)
+	private String longitude;
+	private BigDecimal price;
+	private Boolean finished;
+	private Integer stars;
+	@Column(length = 120)
+	private String feedBack;
 }
