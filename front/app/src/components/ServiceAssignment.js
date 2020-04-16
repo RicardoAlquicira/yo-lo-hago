@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Icon, Input, Button, Text, Layout, CheckBox, SelectItem } from '@ui-kitten/components';
 import {Logo, LogoHeader} from "./Logo"
+import { FlyContext } from '../lib/flyContext';
 
 const baseBorderColor = '#08f';
 
@@ -36,15 +37,20 @@ const useInputState = (initialValue = '') => {
   return { value, onChangeText: setValue };
 };
 
-export const ServiceAssignment = () => {
+export const ServiceAssignment = ({navigation}) => {
 
+  const {fly, userData, showAlert, forceUpdate} =React.useContext(FlyContext);
   const [fareByService, setFareByService] = React.useState();
   const [timeEstimated, setTimeEstimated] = React.useState();
   const [warranty, setWarranty] = React.useState(false);
   const multilineInputState = useInputState();
 
   const onSignInButtonPress = () => {
-    // navigation && navigation.goBack();
+    showAlert("Propuesta enviada!", null, 2000);
+    setTimeout(() => {
+      if(navigation)
+        navigation && navigation.navigate("ProfessionalHome");
+    }, 2000);
   };
 
   const renderOption = (title, idx) => (
@@ -56,14 +62,14 @@ export const ServiceAssignment = () => {
       <Background/>
       <View style={styles.formContainer}>
         <LogoHeader style={{width:"100%", height:100}}/>
-        <Text category='h3'>Buenos días Luis!</Text>
+        <Text category='h3'>Buenos días {userData.name}!</Text>
         <Text category='h5'>Asignación de servicio:</Text>
         <Input
           style={styles.select}
           multiline={true}
           textStyle={{ minHeight: 64 }}
           placeholder='Se rompio la tuberia del fregadero'
-          {...multilineInputState}
+          value='Se rompio la tuberia del fregadero'
         />
         <View style={{width:"100%", height:110}}>
           <View style={{flex:1, flexDirection: 'row'}}>

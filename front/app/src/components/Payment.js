@@ -13,6 +13,7 @@ import {
   TabView
 } from '@ui-kitten/components';
 import {Logo, LogoHeader} from "./Logo"
+import { FlyContext } from '../lib/flyContext';
 
 export const EyeIcon = (style) => (
   <Icon {...style} name='eye'/>
@@ -22,8 +23,9 @@ export const EyeOffIcon = (style) => (
   <Icon {...style} name='eye-off'/>
 );
 
-export const Payment = () => {
+export const Payment = ({navigation}) => {
 
+  const {showAlert} = React.useContext(FlyContext);
   const styles = useStyleSheet(themedStyles);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
 
@@ -133,7 +135,13 @@ export const Payment = () => {
         <Button
           style={styles.signInButton}
           size='large'
-          onPress={()=>{}}>
+          onPress={()=>{
+            showAlert("Procesando pago...", null, 3000);
+            setTimeout(() => {
+              if(navigation)
+                navigation && navigation.navigate("ClientHome");
+            }, 3000);
+          }}>
           Pagar
         </Button>
       </View>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Avatar, Button, Text, Layout, Select, SelectItem, Modal, Card } from '@ui-kitten/components';
+import { CheckBox, Button, Text, Layout, Select, SelectItem, Modal, Card, IndexPath } from '@ui-kitten/components';
 import {Logo, LogoHeader} from "./Logo"
 import Stars from "./Stars"
 import PriceBar from "./PriceBar"
@@ -12,13 +12,14 @@ const data = [
   {name:'Angel Orozco', age:30, profession:'Plomero', distance:'10 km', experienceTime:5, rate:3.5, fare:0.6},
 ];
 
-export const ProfessionalSelected = () => {
+export const ProfessionalSelected = ({navigation}) => {
 
   const [selectedIndex, setSelectedIndex] = React.useState();
   const [modalVisible, setModalVisible] = React.useState(false);
+  const [warranty, setWarranty] = React.useState(false);
 
   const onSignInButtonPress = () => {
-    // navigation && navigation.goBack();
+    navigation && navigation.navigate("Payment");
   };
 
   const renderOption = (element, idx) => (
@@ -46,6 +47,7 @@ export const ProfessionalSelected = () => {
               <AvatarPlaceholder style={styles.profileAvatar}/>
             </View>
             <View style={{flex:7, justifyContent:'center'}}>
+              {selectedIndex && 
               <View style={{flexDirection:'row'}}>
                 <View style={{flex:3}}>
                   <Text>Angel Orozco</Text>
@@ -59,8 +61,10 @@ export const ProfessionalSelected = () => {
                   <Text>5</Text>
                 </View>
               </View>
+              }
             </View>
           </View>
+          {selectedIndex && 
           <View>
             <Stars progress={0.7} style={{alignSelf:'center', height:30, marginTop:5}}/>
             <View style={{marginTop:5, flexDirection:'row', justifyContent:'space-between'}}>
@@ -71,7 +75,17 @@ export const ProfessionalSelected = () => {
               {['Bajo', 'Promedio', 'Alto'].map(val=><Text style={{fontSize:12}} key={val}>{val}</Text>)}
             </View>
           </View>
+          }
         </View>
+        {selectedIndex && <>
+        <Text style={{alignSelf:'flex-start', marginLeft:20, marginVertical:4}}>Costo por reparación: $230.00</Text>
+        <Text style={{alignSelf:'flex-start', marginLeft:20, marginVertical:4}}>Comentarios: Incluye material!!!</Text>
+        <CheckBox
+          style={{alignSelf:'flex-start', padding:4, marginLeft:17}}
+          checked={selectedIndex?true:false}
+          onChange={nextChecked => setWarranty(nextChecked)}>
+          Incluye garantía de 30 dias
+        </CheckBox>
         <Button
           style={{backgroundColor: 'rgba(22, 155, 213, 1)', marginTop:10}}
           size='medium'
@@ -87,6 +101,7 @@ export const ProfessionalSelected = () => {
             Contratar
           </Button>
         </View>
+        </>}
       </View>
       <Modal visible={modalVisible} backdropStyle={{backgroundColor:'#0007'}}>
         <Card disabled={true} style={{borderRadius:20, padding:30}}>

@@ -1,68 +1,58 @@
-import React from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Icon, Input, Button, Text, Layout, Select, SelectItem } from '@ui-kitten/components';
 import {Logo, LogoHeader} from "./Logo"
+import { FlyContext } from '../lib/flyContext';
 
-const CameraIcon = (style) => (
-  <Icon {...style} name='camera-outline'/>
-);
-
-const data = [
-  'Plomero',
-  'Electricista',
-  'Carpintero',
-  'Técnico electronico',
-  'Ayudante de limpieza',
-  'Albañil',
-  'Hojalatero',
-  'Fontanero',
-  'Cerrajero',
-  'Herrero',
-  'Cargador de bultos',
-  'Pintor de exteriores',
-  'otro...'
-];
 const expectedTimeData = [
-  'Urgente menos de 1 hora',
-  '1 hora - 3 horas',
-  '1 a 3 días'
+  {name:'Urgente menos de 1 hora'},
+  {name:'1 hora - 3 horas'},
+  {name:'1 a 3 días'}
 ];
 
 const useInputState = (initialValue = '') => {
-  const [value, setValue] = React.useState(initialValue);
+  const [value, setValue] = useState(initialValue);
   return { value, onChangeText: setValue };
 };
 
 export const ClientHome = () => {
 
-  const [userName, setUserName] = React.useState();
-  const [userMobile, setUserMobile] = React.useState();
-  const [selectedIndex, setSelectedIndex] = React.useState();
-  const [expectedTime, setExpectedTime] = React.useState();
+  const {fly, userData, showAlert, forceUpdate} = useContext(FlyContext);
+  const [userName, setUserName] = useState();
+  const [selectedIndex, setSelectedIndex] = useState();
+  const [expectedTime, setExpectedTime] = useState();
+  const [professionList, setProfessionList] = useState([]);
   const multilineInputState = useInputState();
 
   const onSignInButtonPress = () => {
     // navigation && navigation.goBack();
   };
 
-  const renderOption = (title, idx) => (
-    <SelectItem title={title} key={idx}/>
+  const renderOption = (element, idx) => (
+    <SelectItem title={element.name} key={idx}/>
   );
+
+  
+  useEffect(()=>{
+    fly.get("/professions").then(res=>{
+      setProfessionList(res);
+    });
+  }, []);
 
   return (
     <Layout style={styles.container} level='1'>
       <Background/>
       <View style={styles.formContainer}>
         <LogoHeader style={{width:"100%", height:100}}/>
-        <Text category='h3'>Buenos días Andres!</Text>
+        <Text category='h3'>Buenos días {userData.name}!</Text>
         <Text category='h5'>¿Qué necesitar arreglar?</Text>
         <Select
           style={{width:'100%', marginVertical:7 }}
           placeholder="Busco a un ... ejemplo: Plomero"
-          value={selectedIndex && data[selectedIndex.row]}
+          value={selectedIndex && professionList[selectedIndex.row].name}
           selectedIndex={selectedIndex}
           onSelect={index => setSelectedIndex(index)}>
-          {data.map(renderOption)}
+          {professionList.map(renderOption)}
         </Select>
         <Input
           multiline={true}

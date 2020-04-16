@@ -15,7 +15,7 @@ const useInputState = (initialValue = '') => {
 
 export const ProfessionalForm = () => {
 
-  const {fly, userData, showAlert, forceUpdate} =useContext(FlyContext);
+  const {fly, userData, showAlert, forceUpdate} = useContext(FlyContext);
   const [years, setYears] = useState();
   const [selectedIndex, setSelectedIndex] = useState([]);
   const [professionList, setProfessionList] = useState([]);
