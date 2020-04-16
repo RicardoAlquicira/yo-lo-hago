@@ -31,6 +31,7 @@ export const LoginPage = ({fly, showAlert}) => {
       let user = {name:userName, email, password};
       fly.post("/users", user).then(res=>{
         showAlert("Registro exitoso!, Se enviará un link de confirmación al correo ingresado.", null, 10000);
+        setRegistering(oldVal=>!oldVal);
       });
     }
     fly.post("/users/login", {email, password}).then(res=>{

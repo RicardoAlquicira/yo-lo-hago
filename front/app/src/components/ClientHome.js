@@ -4,27 +4,22 @@ import { Icon, Input, Button, Text, Layout, Select, SelectItem } from '@ui-kitte
 import {Logo, LogoHeader} from "./Logo"
 import { FlyContext } from '../lib/flyContext';
 
-const useInputState = (initialValue = '') => {
-  const [value, setValue] = useState(initialValue);
-  return { value, onChangeText: setValue };
-};
-
 const PinIcon = (style) => (
   <Icon {...style} fill='#000' name='pin-outline'/>
 );
 
 export const ClientHome = ({route, navigation}) => {
   const {fly, userData, showAlert, forceUpdate} = useContext(FlyContext);
-  const [userName, setUserName] = useState();
   const [selectedIndex, setSelectedIndex] = useState();
   const [professionList, setProfessionList] = useState([]);
-  const multilineInputState = useInputState();
   const [coords, setCoords] = useState();
-
-  console.log(coords);
+  const [description, setDescription] = useState();
 
   const onSignInButtonPress = () => {
-    // navigation && navigation.goBack();
+    fly.post("/orders", {client:{id:userData.id}, profession:{id:professionList[selectedIndex.row].id}, description, latitude:coords?coords.latitude:null, longitude:coords?coords.longitude:null}).then(res=>{
+      showAlert("Orden de servicio creada!", null);
+      navigation.navigate("ClientOrders");
+    });
   };
 
   const renderOption = (element, idx) => (
@@ -62,7 +57,8 @@ export const ClientHome = ({route, navigation}) => {
           multiline={true}
           textStyle={{ minHeight: 64 }}
           placeholder='¿Que deseas reparar? Ejemplo: Se rompio la tuberia del fregadero'
-          {...multilineInputState}
+          value={description}
+          onChangeText={setDescription}
         />
         <View style={{width:"100%", height:90}}>
         <View style={{flex:1, flexDirection: 'row'}}>
@@ -80,7 +76,7 @@ export const ClientHome = ({route, navigation}) => {
         </View>
         </View>
         <View style={styles.signInContainer}>
-          <Logo style={{width:90, height:90, marginTop:20, marginRight:20}}/>
+          <Logo style={{width:90, height:90, marginTop:5, marginRight:20}}/>
           <Button
             style={styles.signInButton}
             size='large'
@@ -115,6 +111,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(22, 155, 213, 1)'
   },
   signInContainer: {
+    alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'flex-end',
   },

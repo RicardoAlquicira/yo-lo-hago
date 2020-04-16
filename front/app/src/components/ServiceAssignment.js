@@ -6,56 +6,20 @@ import { FlyContext } from '../lib/flyContext';
 
 const baseBorderColor = '#08f';
 
-const CameraIcon = (style) => (
-  <Icon {...style} name='camera-outline'/>
-);
-
-const data = [
-  'Plomero',
-  'Electricista',
-  'Carpintero',
-  'Técnico electronico',
-  'Ayudante de limpieza',
-  'Albañil',
-  'Hojalatero',
-  'Fontanero',
-  'Cerrajero',
-  'Herrero',
-  'Cargador de bultos',
-  'Pintor de exteriores',
-  'otro...'
-];
-const expectedTimeData = [
-  '24 Hrs. Urgencias todos los dias',
-  'Soló fines de semana',
-  'Soló entre semana',
-  '8 am - 7pm'
-];
-
-const useInputState = (initialValue = '') => {
-  const [value, setValue] = React.useState(initialValue);
-  return { value, onChangeText: setValue };
-};
-
-export const ServiceAssignment = ({navigation}) => {
+export const ServiceAssignment = ({route, navigation}) => {
 
   const {fly, userData, showAlert, forceUpdate} =React.useContext(FlyContext);
   const [fareByService, setFareByService] = React.useState();
   const [timeEstimated, setTimeEstimated] = React.useState();
   const [warranty, setWarranty] = React.useState(false);
-  const multilineInputState = useInputState();
+  const [notes, setNotes] = React.useState('');
 
   const onSignInButtonPress = () => {
-    showAlert("Propuesta enviada!", null, 2000);
-    setTimeout(() => {
-      if(navigation)
-        navigation && navigation.navigate("ProfessionalHome");
-    }, 2000);
+    fly.post("/proposal", {professional:{id:userData.id}, task:{id:route.params.order.id}, notes, warranty, fare:fareByService, estimatedTime:timeEstimated}).then(res=>{
+      showAlert("Propuesta enviada!", null);
+      navigation.navigate("ProfessionalHome");
+    });
   };
-
-  const renderOption = (title, idx) => (
-    <SelectItem title={title} key={idx}/>
-  );
 
   return (
     <Layout style={styles.container} level='1'>
@@ -68,8 +32,7 @@ export const ServiceAssignment = ({navigation}) => {
           style={styles.select}
           multiline={true}
           textStyle={{ minHeight: 64 }}
-          placeholder='Se rompio la tuberia del fregadero'
-          value='Se rompio la tuberia del fregadero'
+          value={route.params.order.description}
         />
         <View style={{width:"100%", height:110}}>
           <View style={{flex:1, flexDirection: 'row'}}>
@@ -78,6 +41,7 @@ export const ServiceAssignment = ({navigation}) => {
               <View style={{flex:1, flexDirection: 'row', alignItems: 'center'}}>
                 <Text style={{marginRight:10}}>Costo por reparación:</Text>
                 <Input
+                  editable={false}
                   style={styles.select}
                   size='small'
                   accessoryLeft={()=><Text>$</Text>}
@@ -108,7 +72,8 @@ export const ServiceAssignment = ({navigation}) => {
           multiline={true}
           textStyle={{ minHeight: 64 }}
           placeholder='Comentarios: Incluye material!!!!'
-          {...multilineInputState}
+          onChangeText={setNotes}
+          value={notes}
         />
         <CheckBox
           style={{alignSelf:'flex-start', padding:4}}

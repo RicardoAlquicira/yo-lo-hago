@@ -5,6 +5,7 @@ import {Logo, LogoHeader} from "./Logo"
 import Stars from "./Stars"
 import PriceBar from "./PriceBar"
 import {AvatarPlaceholder} from "./AvatarPlaceholder"
+import { FlyContext } from '../lib/flyContext';
 
 const baseBorderColor = '#08f';
 
@@ -12,34 +13,43 @@ const data = [
   {name:'Angel Orozco', age:30, profession:'Plomero', distance:'10 km', experienceTime:5, rate:3.5, fare:0.6},
 ];
 
-export const ProfessionalSelected = ({navigation}) => {
+export const ProfessionalSelected = ({route, navigation}) => {
 
+  // console.log(route.params);
+  const {fly, userData, showAlert, forceUpdate} = React.useContext(FlyContext);
   const [selectedIndex, setSelectedIndex] = React.useState();
   const [modalVisible, setModalVisible] = React.useState(false);
-  const [warranty, setWarranty] = React.useState(false);
+  const [proposalList, setProposalList] = React.useState([]);
 
   const onSignInButtonPress = () => {
     navigation && navigation.navigate("Payment");
   };
 
   const renderOption = (element, idx) => (
-    <SelectItem title={element.name} key={idx}/>
+    <SelectItem title={element.professional.name} key={idx}/>
   );
+
+  React.useEffect(()=>{
+    fly.get("/proposal/task/" + route.params.order.id).then(res=>{
+      // console.log("proposal", res);
+      setProposalList(res);
+    });
+  },[]);
 
   return (
     <Layout style={styles.container} level='1'>
       <Background/>
       <View style={styles.formContainer}>
         <LogoHeader style={{width:"100%", height:100, marginTop:-30}}/>
-        <Text category='h3'>Buenos días Andres!</Text>
-        <Text category='h6'>Estos son los plomeros más cercanos:</Text>
+        <Text category='h3'>Buenos días {userData.name}!</Text>
+        <Text category='h6'>Estos son los {route.params.order.profession.name} más cercanos:</Text>
         <Select
           style={{...styles.select, width:'90%', marginVertical:7 }}
           placeholder="Selecciona uno de la lista"
-          value={selectedIndex && data[selectedIndex.row].name}
+          value={selectedIndex && proposalList[selectedIndex.row].professional.name}
           selectedIndex={selectedIndex}
           onSelect={index => setSelectedIndex(index)}>
-          {data.map(renderOption)}
+          {proposalList.map(renderOption)}
         </Select>
         <View style={styles.cardContainer}>
           <View style={{flexDirection:'row'}}>
@@ -50,15 +60,15 @@ export const ProfessionalSelected = ({navigation}) => {
               {selectedIndex && 
               <View style={{flexDirection:'row'}}>
                 <View style={{flex:3}}>
-                  <Text>Angel Orozco</Text>
-                  <Text>Oficio: Plomero</Text>
+                  <Text>{proposalList[selectedIndex.row].professional.name}</Text>
+                  <Text>Oficio: {route.params.order.profession.name}</Text>
                   <Text>Años de experiencia:</Text>
                   <Text>Evaluación:</Text>
                 </View>
                 <View style={{flex:1}}>
-                  <Text>30 años</Text>
+                  <Text>{proposalList[selectedIndex.row].professional.age} años</Text>
                   <Text>10 km</Text>
-                  <Text>5</Text>
+                  <Text>2</Text>
                 </View>
               </View>
               }
@@ -78,12 +88,12 @@ export const ProfessionalSelected = ({navigation}) => {
           }
         </View>
         {selectedIndex && <>
-        <Text style={{alignSelf:'flex-start', marginLeft:20, marginVertical:4}}>Costo por reparación: $230.00</Text>
-        <Text style={{alignSelf:'flex-start', marginLeft:20, marginVertical:4}}>Comentarios: Incluye material!!!</Text>
+        <Text style={{alignSelf:'flex-start', marginLeft:20, marginVertical:4}}>Costo por reparación: ${proposalList[selectedIndex.row].fare}</Text>
+        <Text style={{alignSelf:'flex-start', marginLeft:20, marginVertical:4}}>Comentarios: {proposalList[selectedIndex.row].notes}</Text>
+        <Text style={{alignSelf:'flex-start', marginLeft:20, marginVertical:4}}>Tiempo estimado: {proposalList[selectedIndex.row].estimatedTime} días</Text>
         <CheckBox
           style={{alignSelf:'flex-start', padding:4, marginLeft:17}}
-          checked={selectedIndex?true:false}
-          onChange={nextChecked => setWarranty(nextChecked)}>
+          checked={proposalList[selectedIndex.row].warranty}>
           Incluye garantía de 30 dias
         </CheckBox>
         <Button
