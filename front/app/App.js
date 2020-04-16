@@ -34,16 +34,12 @@ const DrawerContent = ({ navigation, state, userLogout, userData }) => {
         return navigation.navigate(state.routeNames[index.row]);
       }}>
       <DrawerItem title='Mi perfil' />
-      {userData.isClient && <>
-        <DrawerItem title='ClientHome' />
-        <DrawerItem title='ProfessionalSelected' />
-        <DrawerItem title='Payment' />
-      </>}
-      {userData.isProfessional && <>
-        <DrawerItem title='ProfessionalHome' />
-        <DrawerItem title='ProfessionalForm' />
-        <DrawerItem title='ServiceAssignment' />
-      </>}
+      {userData.isClient && <DrawerItem title='ClientHome' />}
+      {userData.isClient && <DrawerItem title='ProfessionalSelected' />}
+      {userData.isClient && <DrawerItem title='Payment' />}
+      {userData.isProfessional && <DrawerItem title='ProfessionalHome' />}
+      {userData.isProfessional && <DrawerItem title='ProfessionalForm' />}
+      {userData.isProfessional && <DrawerItem title='ServiceAssignment' />}
       <DrawerItem title='Logout' />
     </Drawer>
   );
@@ -53,18 +49,14 @@ export const DrawerNavigator = () => {
   const {userLogout, userData} = React.useContext(FlyContext);
   return (
     <Navigator drawerContent={props => <DrawerContent {...props} userLogout={userLogout} userData={userData}/>} 
-    headerMode="none" animationEnabled={false} initialRouteName={userData.isProfessional?(!userData.profession?'ProfessionalForm':'ProfessionalHome'):'ClientHome'}>
+    headerMode="none" animationEnabled={false} initialRouteName={userData.isProfessional?(!userData.experienced?'ProfessionalForm':'ProfessionalHome'):'ClientHome'}>
       <Screen name="UserForm" component={UserForm} />
-      {userData.isClient && <>
-        <Screen name="ClientHome" component={ClientHome} />
-        <Screen name="ProfessionalSelected" component={ProfessionalSelected} />
-        <Screen name="Payment" component={Payment} />
-      </>}
-      {userData.isProfessional && <>
-        <Screen name="ProfessionalHome" component={ProfessionalHome} />
-        <Screen name="ProfessionalForm" component={ProfessionalForm} />
-        <Screen name="ServiceAssignment" component={ServiceAssignment} />
-      </>}
+      {userData.isClient && <Screen name="ClientHome" component={ClientHome} />}
+      {userData.isClient && <Screen name="ProfessionalSelected" component={ProfessionalSelected} />}
+      {userData.isClient && <Screen name="Payment" component={Payment} />}
+      {userData.isProfessional && <Screen name="ProfessionalHome" component={ProfessionalHome} />}
+      {userData.isProfessional && <Screen name="ProfessionalForm" component={ProfessionalForm} />}
+      {userData.isProfessional && <Screen name="ServiceAssignment" component={ServiceAssignment} />}
     </Navigator>
   );
 }

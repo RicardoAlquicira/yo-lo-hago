@@ -76,7 +76,8 @@ function FlyContextProvider(props) {
           return Promise.resolve(response.data)
         },
         (err) => {
-          console.log("err", err.status, err.message);
+          // const {engine, ...rest} = err;
+          // console.log("err", rest);
           if(err.status === 401){
             AsyncStorage.removeItem('@MyApp_user');
             AsyncStorage.removeItem('@MyApp_token');

@@ -2,12 +2,9 @@ package com.example.domain;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -29,12 +26,7 @@ public class User {
 	private Integer age;
 	@Column(length = 60)
 	private String password;
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "professionId")
-	private Profession profession;
-	private Integer experienceYears;
-	@Column(length = 600)
-	private String experience;
+	private Boolean experienced;
 	private WorkSchedule workSchedule;
 	private Boolean isProfessional;
 	private Boolean isClient;

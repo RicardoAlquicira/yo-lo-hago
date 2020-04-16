@@ -1,7 +1,5 @@
 package com.example.domain;
 
-import java.math.BigDecimal;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,22 +14,20 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "Proposal")
+@Table(name = "Expertis")
 @Getter @Setter
-public class Proposal {
+public class Expertis {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "professionalId")
-	private User professional;
+	@JoinColumn(name = "professionId")
+	private Profession profession;
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "taskId")
-	private ServiceOrder task;
-	@Column(length = 100)
-	private String notes;
-	private Boolean warranty;
-	private BigDecimal fare;
-	private Integer estimatedTime;
+	@JoinColumn(name = "userId")
+	private User user;
+	@Column(length = 200)
+	private String experience;
+	private Integer years;
 
 }

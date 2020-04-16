@@ -27,8 +27,7 @@ public class UserController {
 		me.setEmail(from.getEmail());
 		me.setPhone(from.getPhone());
 		me.setAge(from.getAge());
-		me.setExperienceYears(from.getExperienceYears());
-		me.setExperience(from.getExperience());
+		me.setExperienced(from.getExperienced());
 		me.setWorkSchedule(from.getWorkSchedule());
 		me.setIsProfessional(from.getIsProfessional());
 		me.setIsClient(from.getIsClient());

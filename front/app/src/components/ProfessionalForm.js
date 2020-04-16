@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Icon, Input, Button, Text, Layout, Select, SelectItem } from '@ui-kitten/components';
+import { Icon, Input, Button, Text, Layout, Select, SelectItem, IndexPath } from '@ui-kitten/components';
 import {Logo, LogoHeader} from "./Logo"
 import { FlyContext } from '../lib/flyContext';
 
@@ -8,50 +8,57 @@ const CameraIcon = (style) => (
   <Icon {...style} name='camera-outline'/>
 );
 
-const data = [
-  'Plomero',
-  'Electricista',
-  'Carpintero',
-  'Técnico electronico',
-  'Ayudante de limpieza',
-  'Albañil',
-  'Hojalatero',
-  'Fontanero',
-  'Cerrajero',
-  'Herrero',
-  'Cargador de bultos',
-  'Pintor de exteriores',
-  'otro...'
-];
-const expectedTimeData = [
-  '24 Hrs. Urgencias todos los dias',
-  'Soló fines de semana',
-  'Soló entre semana',
-  '8 am - 7pm'
-];
-
 const useInputState = (initialValue = '') => {
-  const [value, setValue] = React.useState(initialValue);
+  const [value, setValue] = useState(initialValue);
   return { value, onChangeText: setValue };
 };
 
 export const ProfessionalForm = () => {
 
-  const {fly, userData, showAlert, forceUpdate} = React.useContext(FlyContext);
-  const [userName, setUserName] = React.useState();
-  const [userMobile, setUserMobile] = React.useState();
-  const [selectedIndex, setSelectedIndex] = React.useState();
-  const [expectedTime, setExpectedTime] = React.useState();
-  const multilineInputState = useInputState();
+  const {fly, userData, showAlert, forceUpdate} =useContext(FlyContext);
+  const [years, setYears] = useState();
+  const [selectedIndex, setSelectedIndex] = useState([]);
+  const [professionList, setProfessionList] = useState([]);
+  const [editingJob, setEditingJob] = useState();
+  const [userExpertisJob, setUserExpertisJob] = useState([]);
+  const [experience, setExperience] = useState('');
+
+  useEffect(()=>{
+    fly.get("/professions").then(res=>{
+      setProfessionList(res);
+      fly.get("/expertis/user/"+userData.id).then(expertises=>{
+        let jobsForMe = [];
+        let expertiseJob = [];
+        expertises.map(expertis=>{
+          const profIdx=res.findIndex(profession=>profession.id===expertis.profession.id);
+          if(profIdx!==-1){
+            jobsForMe.push(new IndexPath(profIdx));
+            expertiseJob.push(expertis);
+          }
+        });
+        setSelectedIndex(jobsForMe);
+        setUserExpertisJob(expertiseJob);
+      });
+    });
+  }, []);
 
   const onSignInButtonPress = () => {
-    // navigation && navigation.goBack();
+    fly.post("/expertis", {id:userExpertisJob[editingJob.row].id, experience, years, user:{id:userExpertisJob[editingJob.row].user.id}}).then(res=>{
+      showAlert("Datos actualizados!", null);
+    });
   };
 
-  const renderOption = (title, idx) => (
-    <SelectItem title={title} key={idx}/>
+  const renderOption = (element) => (
+    <SelectItem title={element.name} key={element.id}/>
   );
-
+  
+  const groupDisplayValues = selectedIndex.map(index => {
+    return professionList[index.row].name;
+  });
+  const groupSelectedValues = selectedIndex.map(index => {
+    return professionList[index.row];
+  });
+  
   return (
     <Layout style={styles.container} level='1'>
       <Background/>
@@ -59,18 +66,35 @@ export const ProfessionalForm = () => {
         <LogoHeader style={{width:"100%", height:100}}/>
         <Text category='h3'>Buenos días {userData.name}!</Text>
         <Select
-          style={{width:'100%', marginVertical:7 }}
+          multiSelect={true}
+          style={{width:'100%'}}
           placeholder="¿A qué te dedicas?"
-          value={selectedIndex && data[selectedIndex.row]}
+          value={groupDisplayValues.join(', ')}
           selectedIndex={selectedIndex}
           onSelect={index => setSelectedIndex(index)}>
-          {data.map(renderOption)}
+          {/* {professionList.concat([{name:'otro...', description:''}]).map(renderOption)} */}
+          {professionList.map(renderOption)}
+        </Select>
+        <Select
+          disabled={selectedIndex.length===0}
+          style={{width:'100%'}}
+          placeholder="Selecciona un trabajo"
+          value={editingJob && groupDisplayValues[editingJob.row]}
+          selectedIndex={editingJob}
+          onSelect={index => {
+            setEditingJob(index);
+            setExperience(userExpertisJob[index.row].experience);
+            setYears(userExpertisJob[index.row].years.toString());
+          }}>
+          {groupSelectedValues.map(renderOption)}
         </Select>
         <Input
+          disabled={!editingJob}
           multiline={true}
           textStyle={{ minHeight: 64 }}
           placeholder='¿Cuál es tu experiencia?, cuentanos'
-          {...multilineInputState}
+          value={experience}
+          onChangeText={setExperience}
         />
         <View style={{width:"100%", height:90}}>
           <View style={{flex:1, flexDirection: 'row'}}>
@@ -79,31 +103,24 @@ export const ProfessionalForm = () => {
               <View style={{flex:1, flexDirection: 'row', alignItems: 'center'}}>
                 <Text style={{marginRight:10}}>Años de experiencia:</Text>
                 <Input
+                  disabled={!editingJob}
                   placeholder="0"
                   keyboardType={'numeric'}
-                  value={userName}
-                  onChangeText={setUserName}
+                  value={years}
+                  onChangeText={setYears}
                 />
               </View>
             </View>
             <Icon style={{width:90, height:90}} name='camera-outline'/>
           </View>
         </View>
-        <Select
-          style={{width:'100%'}}
-          placeholder="Horarios en los que prefieres trabajar"
-          value={expectedTime && expectedTimeData[expectedTime.row]}
-          selectedIndex={expectedTime}
-          onSelect={index => setExpectedTime(index)}>
-          {expectedTimeData.map(renderOption)}
-        </Select>
         <View style={styles.signInContainer}>
           <Logo style={{width:90, height:90, marginTop:20, marginRight:20}}/>
           <Button
             style={styles.signInButton}
             size='large'
             onPress={onSignInButtonPress}>
-            Enviar
+            Guardar
           </Button>
         </View>
       </View>
