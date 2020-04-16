@@ -21,7 +21,7 @@ function FlyContextProvider(props) {
       // flyState.post("/logout");
     }
 
-    const getMyValue = async (fly) => {
+    const forceUpdate = async (fly) => {
       try {
         const user = await AsyncStorage.getItem('@MyApp_user');
         const token = await AsyncStorage.getItem('@MyApp_token');
@@ -87,7 +87,7 @@ function FlyContextProvider(props) {
         }
       );
       setFlyState(fly);
-      getMyValue(fly);
+      forceUpdate(fly);
       console.log("fly initialized")
     }, []);
 
@@ -108,7 +108,7 @@ function FlyContextProvider(props) {
 
     return (
       flyState!==null &&
-      <FlyContext.Provider value={{fly:flyState, isLoggedIn, userData, setLogged, userLogout, showAlert}}>
+      <FlyContext.Provider value={{fly:flyState, isLoggedIn, userData, setLogged, userLogout, showAlert, forceUpdate}}>
       {
         isLoggedIn && userData ?
         props.children :

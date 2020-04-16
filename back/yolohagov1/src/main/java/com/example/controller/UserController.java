@@ -20,6 +20,9 @@ public class UserController {
 	@PostMapping("")
 	public @ResponseBody Long saveUser (@RequestBody User from) {
 		User me = (null != from.getId()) ? userRepository.findById(from.getId()) : new User();
+		if(null == from.getId()) {
+			me.setPassword(from.getPassword());
+		}
 		me.setName(from.getName());
 		me.setEmail(from.getEmail());
 		me.setPhone(from.getPhone());

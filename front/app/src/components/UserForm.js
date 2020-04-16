@@ -28,7 +28,7 @@ const data = [
 
 export const UserForm = () => {
 
-  const {fly, userData, showAlert} = React.useContext(FlyContext);
+  const {fly, userData, showAlert, forceUpdate} = React.useContext(FlyContext);
   const [age, setAge] = React.useState(userData.age.toString());
   const [email, setEmail] = React.useState(userData.email);
   const [userName, setUserName] = React.useState(userData.name);
@@ -54,6 +54,7 @@ export const UserForm = () => {
     }
     fly.post("/users", user).then(res=>{
       // console.log(res);
+      forceUpdate(fly);
       showAlert("Perfil guardado!", null);
     });
   };

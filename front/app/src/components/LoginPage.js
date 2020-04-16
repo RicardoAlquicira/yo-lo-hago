@@ -16,15 +16,23 @@ const EmailIcon = (style) => (
 
 export const LoginPage = ({fly, showAlert}) => {
   const [email, setEmail] = React.useState();
-  const [password, setPassword] = React.useState();
-  const [repassword, setRepassword] = React.useState();
+  const [password, setPassword] = React.useState("");
+  const [repassword, setRepassword] = React.useState("");
   const [passwordVisible, setPasswordVisible] = React.useState(false);
   const [userName, setUserName] = React.useState();
-  const [registering, setRegistering] = React.useState(true);
+  const [registering, setRegistering] = React.useState(false);
 
   const onSignInButtonPress = () => {
-    if(registering && password!==repassword)
-      return showAlert("Las contraseñas ingresadas no coinciden.", null);
+    if(registering) {
+      if(password!==repassword)
+        return showAlert("Las contraseñas ingresadas no coinciden.", null);
+      if(password.length < 5)
+        return showAlert("Las contraseña debe ser mínimo de 5 caracteres.", null);
+      let user = {name:userName, email, password};
+      fly.post("/users", user).then(res=>{
+        showAlert("Registro exitoso!, Se enviará un link de confirmación al correo ingresado.", null, 10000);
+      });
+    }
     fly.post("/users/login", {email, password}).then(res=>{
       if(!res)
         showAlert("Usuario o contraseña incorrecta.", "Ok");
