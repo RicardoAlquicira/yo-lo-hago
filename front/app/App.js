@@ -32,7 +32,8 @@ const DrawerContent = ({ navigation, state, userLogout, userData }) => {
     <Drawer
       selectedIndex={state.index}
       onSelect={index => {
-        if(index.row===9)
+        console.log(state.routeNames.length, index.row);
+        if(state.routeNames.length===index.row+1)
           return userLogout();
         return navigation.navigate(state.routeNames[index.row]);
       }}>

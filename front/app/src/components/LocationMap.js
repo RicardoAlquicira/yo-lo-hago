@@ -8,7 +8,7 @@ import {Logo, LogoHeader} from "./Logo"
 
 export const LocationMap = ({route, navigation}) => {
 
-  const [coords, setCoords] = useState(route.params.coords);
+  const [coords, setCoords] = useState(route.params?route.params.coords:{latitude:19.4305176,longitude:-99.1297278});
 
   useEffect(()=>{
     Geolocation.getCurrentPosition(info => {
